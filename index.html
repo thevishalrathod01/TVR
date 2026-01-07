@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TVR Pvt Ltd | Internship Hiring</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
+    body { background: #f4f7fb; color: #333; }
+    header { background: linear-gradient(135deg, #1e3c72, #2a5298); color: white; padding: 60px 20px; text-align: center; }
+    header h1 { font-size: 42px; }
+    header p { margin-top: 10px; font-size: 18px; }
+    section { padding: 60px 20px; max-width: 1100px; margin: auto; }
+    h2 { text-align: center; margin-bottom: 40px; font-size: 32px; }
+    .about, .roles, .apply, .legal { background: white; border-radius: 12px; padding: 40px; margin-bottom: 40px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); }
+    .roles-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+    .role { background: #f0f4ff; padding: 25px; border-radius: 10px; transition: transform 0.3s; }
+    .role:hover { transform: translateY(-5px); }
+    .apply form { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .apply form input, .apply form select, .apply form textarea { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ccc; }
+    .apply form textarea { grid-column: span 2; }
+    .apply button { grid-column: span 2; padding: 15px; border: none; background: #2a5298; color: white; font-size: 18px; border-radius: 10px; cursor: pointer; }
+    footer { background: #1e3c72; color: white; text-align: center; padding: 20px; }
+    @media(max-width: 768px) { .apply form { grid-template-columns: 1fr; } .apply form textarea, .apply button { grid-column: span 1; } }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>TVR Pvt Ltd</h1>
+  <p>Internship Hiring Program | Pune, Maharashtra, India</p>
+</header>
+
+<section>
+  <div class="about">
+    <h2>About TVR Pvt Ltd</h2>
+    <p>TVR Pvt Ltd is a registered IT services company based in Pune, Maharashtra, India, offering professional internships with stipend, offer letter, and completion certificate.</p>
+  </div>
+
+  <div class="roles">
+    <h2>Available Internship Roles</h2>
+    <div class="roles-grid">
+      <div class="role"><h3>Web Development Intern</h3><p>₹8,000 – ₹12,000/month</p></div>
+      <div class="role"><h3>Software Development Intern</h3><p>₹10,000/month</p></div>
+      <div class="role"><h3>UI/UX Design Intern</h3><p>₹7,000/month</p></div>
+      <div class="role"><h3>Data Analyst Intern</h3><p>₹9,000/month</p></div>
+    </div>
+  </div>
+
+  <div class="apply">
+    <h2>Apply for Internship</h2>
+    <form id="internshipForm">
+      <input type="text" name="name" placeholder="Full Name" required />
+      <input type="email" name="email" placeholder="Email Address" required />
+      <input type="text" name="college" placeholder="College Name" required />
+      <select name="role" required>
+        <option value="">Select Internship Role</option>
+        <option>Web Development Intern</option>
+        <option>Software Development Intern</option>
+        <option>UI/UX Design Intern</option>
+        <option>Data Analyst Intern</option>
+      </select>
+      <button type="submit">Submit & Get Offer Letter</button>
+    </form>
+  </div>
+
+  <div class="legal">
+    <h2>Internship Terms</h2>
+    <p>• Duration: 3 Months<br>• Mode: Remote/Hybrid<br>• Certificate & LOR after completion<br>• Selection based on performance evaluation</p>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 TVR Pvt Ltd | Pune, Maharashtra, India</p>
+</footer>
+
+<script>
+  emailjs.init("_vjMzByCBpkyP36RI");
+
+  document.getElementById("internshipForm").addEventListener("submit", function(e){
+    e.preventDefault();
+
+    const name = this.name.value;
+    const email = this.email.value;
+    const role = this.role.value;
+
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF();
+    pdf.setFontSize(14);
+    pdf.text("TVR Pvt Ltd – Internship Offer Letter", 20, 20);
+    pdf.text(`Name: ${name}`, 20, 40);
+    pdf.text(`Role: ${role}`, 20, 50);
+    pdf.text("Location: Pune, Maharashtra, India", 20, 60);
+    pdf.text("Duration: 3 Months", 20, 70);
+    pdf.text("HR Team – TVR Pvt Ltd", 20, 90);
+
+    const pdfBase64 = pdf.output('datauristring');
+
+    emailjs.send("service_tvrpvtltd", "template_mi3cp7b", {
+      to_email: email,
+      from_name: name,
+      role: role,
+      attachment: pdfBase64
+    }).then(() => {
+      alert("Offer letter sent to email & PDF generated!");
+      this.reset();
+    }).catch((error) => {
+      alert("Error sending email: " + error.text);
+    });
+  });
+</script>
+
+</body>
+</html>
